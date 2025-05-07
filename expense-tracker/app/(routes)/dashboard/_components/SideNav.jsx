@@ -2,7 +2,7 @@ import React from 'react'
 
 function SideNav() {
   return (
-    <div>SidNav</div>
+    <div className='h-screen'></div>
   )
 }
 
