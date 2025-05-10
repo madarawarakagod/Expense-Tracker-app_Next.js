@@ -1,9 +1,10 @@
-'use client'
+	"use client"
 import Image from 'next/image'
-import { LayoutGrid, Link, PiggyBank,ReceiptText,ShieldCheck } from 'lucide-react'
+import { LayoutGrid, PiggyBank,ReceiptText,ShieldCheck} from 'lucide-react'
 import { UserButton } from '@clerk/nextjs'
 import React ,{useEffect} from 'react'
 import { usePathname } from 'next/navigation'
+import Link from 'next/link';
 
 
 
@@ -61,6 +62,7 @@ function SideNav() {
     <Link href={menu.path}>
       <h2 className={`flex gap-2 items-center 
         text-gray-500 font-medium 
+        mb-2
         p-5 cursor-pointer rounded-md 
         hover: text-primary hover:bg-purple-300
         ${path==menu.path&& 'text-primary bg-blue-100'}
