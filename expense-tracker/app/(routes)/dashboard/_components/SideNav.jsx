@@ -1,8 +1,8 @@
 	"use client"
+import React ,{useEffect} from 'react'
 import Image from 'next/image'
 import { LayoutGrid, PiggyBank,ReceiptText,ShieldCheck} from 'lucide-react'
 import { UserButton } from '@clerk/nextjs'
-import React ,{useEffect} from 'react'
 import { usePathname } from 'next/navigation'
 import Link from 'next/link';
 
@@ -54,17 +54,15 @@ function SideNav() {
       width={100}
       height={100}
     />
-
-
     <div className='mt-5'> 
     
-    {menuList.map((menu, index)=>( 
+    {menuList.map((menu,index)=>( 
     <Link href={menu.path}>
       <h2 className={`flex gap-2 items-center 
         text-gray-500 font-medium 
         mb-2
         p-5 cursor-pointer rounded-md 
-        hover: text-primary hover:bg-purple-300
+        hover:text-primary hover:bg-purple-100
         ${path==menu.path&& 'text-primary bg-blue-100'}
     `}>
     <menu.icon/> 
