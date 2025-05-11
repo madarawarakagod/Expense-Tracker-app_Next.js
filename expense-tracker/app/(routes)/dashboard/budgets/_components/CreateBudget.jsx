@@ -9,18 +9,37 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
+
 import EmojiPicker from 'emoji-picker-react'
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { db } from '@/utils/schema';
+import {Budgets} from '@/utils/schema';
 
 
-
-
-function CreateBudget() {
+function CreateBudget() 
+{
        
      const [emojiIcon,setEmojiIcon]=useState('☺️');
      const [openEmojiPicker,setOpenEmojiPicker]=useState(false)
 
+      const [name,setName]=useState();
+      const [amount,setAmount]=useState();
 
+      const {user}=useUser(); 
+      const onCreateBudget=async()=>{ 
+      const result=await db.insert(Budgets) 
+            .values({ 
+                  name:name, 
+                  amount:amount, 
+                  createdBy: user?.primaryEmailAddress?.emailAddress, 
+                  icon:emojiIcon 
+      }).returning({insertedId:Budgets.id}) 
+      
+      if (result)
+      {
+    toast('New Budget created !')
+      }     
   return (
     <div>
         
@@ -55,7 +74,24 @@ function CreateBudget() {
             }}
              />
 I       </div>
-        </div>
+         <div className='mt-2'> 
+         <h2 className='text-black font-medium my-1'> Budget Name</h2>
+         <Input placeholder="e.g. Home Decor"
+         onChange={(e)=>setName(e.target.value)} /> 
+
+         </div> 
+          <div className='mt-2'> 
+         <h2 className='text-black font-medium my-1'> Budget Amount</h2>
+         <Input type="number"
+          placeholder="e.g. 5000" 
+          onChange={(e)=>setAmount(e.target.value)}/> 
+         </div> 
+         <Button 
+             disabled={!(name&&amount)}
+             onClick={()=>onCreateBudget()}
+         className="mt-5 w-full">Create Budget</Button>
+      </div>
+       
        
       
       </DialogDescription>
@@ -68,5 +104,4 @@ I       </div>
 
   )
 }
-
 export default CreateBudget
