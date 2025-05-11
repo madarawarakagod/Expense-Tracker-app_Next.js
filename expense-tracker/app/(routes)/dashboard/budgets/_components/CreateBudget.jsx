@@ -13,8 +13,10 @@ import {
 import EmojiPicker from 'emoji-picker-react'
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { db } from '@/utils/schema';
-import {Budgets} from '@/utils/schema';
+import { db, Budgets } from '@/utils/schema';
+
+import { useUser } from '@clerk/nextjs';
+import {toast} from 'sonner';
 
 
 function CreateBudget() 
@@ -27,6 +29,11 @@ function CreateBudget()
       const [amount,setAmount]=useState();
 
       const {user}=useUser(); 
+
+      /**
+       * used to create New Budget
+       */
+
       const onCreateBudget=async()=>{ 
       const result=await db.insert(Budgets) 
             .values({ 
@@ -36,16 +43,18 @@ function CreateBudget()
                   icon:emojiIcon 
       }).returning({insertedId:Budgets.id}) 
       
-      if (result)
-      {
-    toast('New Budget created !')
-      }     
+         if (result)
+         {
+           toast('New Budget created !')
+         }
+      };     
+      
+      
+
   return (
-    <div>
-        
-        
-        <Dialog>
-  <DialogTrigger asChild>
+    <div>       
+     <Dialog>
+    <DialogTrigger asChild>
     <div className='bg-slate-100 p-10 rounded-md items-center flex flex-col border-2 border-dashed 
         cursor-pointer hover:shadow-md '>
         <h2 className='text-3xl'>+</h2> 
