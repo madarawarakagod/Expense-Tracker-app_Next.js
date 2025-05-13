@@ -2,14 +2,14 @@
 import React, { useEffect,useState} from 'react'
 import CreateBudget from './CreateBudget'
 import { db } from '@/utils/dbConfig'
-import { eq,getTableColumns,sql } from 'drizzle-orm'
+import { eq,getTableColumns,sql,desc } from 'drizzle-orm'
 import { Budgets,Expenses } from '@/utils/schema'
 import { useUser } from '@clerk/nextjs'
 import BudgetItem from './BudgetItem'; 
 
 function BudgetList() {
   
-  const [budgetList,setbudgetList]=useState([]);
+  const [budgetList,setBudgetList]=useState([]);
   const {user}=useUser();
 useEffect(()=>{
     user&&getBudgetList();  
@@ -24,8 +24,12 @@ useEffect(()=>{
       }).from(Budgets) 
        .leftJoin(Expenses,eq(Budgets.id,Expenses.budgetId)) 
        .where(eq(Budgets.createdBy,user?.primaryEmailAddress?.emailAddress))
-       .groupBy(Budgets.id);
-        setbudgetList(result);
+       .groupBy(Budgets.id)
+       .orderBy(desc(Budgets.id));
+
+
+        setBudgetList(result);
+
       
 }    
     
@@ -36,10 +40,16 @@ useEffect(()=>{
     <div className='grid grid-cols-1 md:cols-2 
     lg:grid-cols-3 gap-5'>
 
-    <CreateBudget/>
-    {budgetList.map((budget,index)=>(
+    <CreateBudget
+    refreshData={()=>getBudgetList()}/>
+    {budgetList?.length>0? budgetList.map((budget,index)=>(
       <BudgetItem budget={budget}/>
-    ))}
+    ))
+  :[1,2,3,4,5].map((item,index)=>(
+    <div key={index} className='w-full bg-slate-200 rounded-lg
+    h-[150px] animate-pulse'></div>
+  ))
+  }
     </div>
     </div>
   )
