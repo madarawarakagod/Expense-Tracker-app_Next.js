@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { db } from '@/utils/dbConfig';
 import { Expenses,Budgets} from '@/utils/schema';
 import { toast } from 'sonner';
+import moment from 'moment';
 
 
 function AddExpense({budgetId,user,refreshData}){
@@ -16,7 +17,7 @@ function AddExpense({budgetId,user,refreshData}){
         name:name, 
         amount:amount, 
         budgetId:budgetId,
-        createdAt:
+        createdAt:moment().format('DD/MM/YY')
    }).returning({insertedId:Budgets.id});
 
    console.log(result);
