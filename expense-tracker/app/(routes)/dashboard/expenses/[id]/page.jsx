@@ -2,10 +2,11 @@
 import React, { useEffect,useState} from 'react'
 import { Budgets,Expenses } from '@/utils/schema';
 import { useUser } from '@clerk/nextjs';
-import {eq,getTableColumns,sql} from 'drizzle-orm';
+import {eq,getTableColumns,sql,desc} from 'drizzle-orm';
 import { db } from '@/utils/dbConfig';
 import BudgetItem from '../../budgets/_components/BudgetItem';
 import AddExpense from '../_components/AddExpense';
+import ExpenseListTable from '../_components/ExpenseListTable';
 
 
 
@@ -13,10 +14,12 @@ import AddExpense from '../_components/AddExpense';
 function ExpensesScreen({params}){
     const {user}=useUser();
     const [budgetInfo,setbudgetInfo]=useState();
+    const [expensesList,setExpensesList]=useState([]);
     useEffect(()=>{
        
-        user&&getBudgetInfo();
-},[user]);
+    user&&getBudgetInfo();
+     
+    },[user]);
      
 
          const getBudgetInfo=async()=> { 
@@ -32,9 +35,20 @@ function ExpensesScreen({params}){
                 .groupBy(Budgets.id)
                 
                 setbudgetInfo(result[0]);      
-               
+                getExpensesList();
+             
          }    
- 
+         
+   /**Get Latest Expenses */
+   const getExpensesList=async()=>{
+    const result=await db.select().from(Expenses)
+    .where(eq(Expenses.budgetId,params.id))
+    .orderBy(desc(Expenses.id));
+    setExpensesList(result);
+    console.log(result);
+
+   }
+
 
     return(
         <div className='p-10'>
@@ -47,10 +61,15 @@ function ExpensesScreen({params}){
             -lg animate-pulse'>
             </div>}
             <AddExpense budgetId={params.id}
-            user={user}/>
+            user={user}
+              refreshData={()=>getBudgetInfo()}/>
            </div>
 
-        </div>
+      <div  className='mt-4'>
+        <h2 className='font-bold text-lg'>Latest Expenses</h2>
+        <ExpenseListTable expensesList={expensesList}/>
+</div>
+</div>
     )
 }
 

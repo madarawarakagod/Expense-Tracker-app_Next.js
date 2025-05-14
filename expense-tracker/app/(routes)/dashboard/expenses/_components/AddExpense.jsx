@@ -6,7 +6,7 @@ import { Expenses,Budgets} from '@/utils/schema';
 import { toast } from 'sonner';
 
 
-function AddExpense({budgetId,user}){
+function AddExpense({budgetId,user,refreshData}){
 
     const [name,setName]=useState();
     const [amount,setAmount]=useState();
@@ -16,11 +16,12 @@ function AddExpense({budgetId,user}){
         name:name, 
         amount:amount, 
         budgetId:budgetId,
-        createdAt:user?.primaryEmailAddress?.emailAddress
+        createdAt:
    }).returning({insertedId:Budgets.id});
 
    console.log(result);
    if(result){
+      refreshData()
     toast('New Expense Added');
    }
 }
