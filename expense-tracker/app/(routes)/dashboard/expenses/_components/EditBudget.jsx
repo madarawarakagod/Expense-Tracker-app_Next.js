@@ -1,5 +1,5 @@
 "use client"
-import React, {useState} from 'react'
+import React, {useState,useEffect} from 'react'
 import { PenBox } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import {
@@ -13,10 +13,14 @@ import {
 import EmojiPicker from 'emoji-picker-react';
 import { useUser } from '@clerk/nextjs';
 import { Input } from '@/components/ui/input';
+import {db} from '@/utils/dbConfig'
+import {Budgets} from '@/utils/schema'
+import { toast } from 'sonner';
+import {eq} from 'drizzle-orm';
 
 
 
-function EditBudget({budgetInfo}) {
+function EditBudget({budgetInfo,refreshData}) {
     const [emojiIcon,setEmojiIcon]=useState(budgetInfo?.icon);
        const [openEmojiPicker,setOpenEmojiPicker]=useState(false)
   
@@ -25,8 +29,28 @@ function EditBudget({budgetInfo}) {
   
         const {user}=useUser(); 
 
-        const onUpdateBudget=()=>{
+        useEffect(()=>{
+          if(budgetInfo){
+            if(budgetInfo){
+              setEmojiIcon(budgetInfo?.icon)
+              setAmount(budgetInfo.amount);
+              setName(budgetInfo.amount);
+            }
+          }
+        },[budgetInfo])
 
+        const onUpdateBudget=async()=>{
+            const result=await db.update(Budgets).set({
+              name:name,
+              amount:amount,
+              icon:emojiIcon,
+            }).where(eq(Budgets.id,budgetInfo.id))
+              .returning();
+            if(result){
+              refreshData()
+              toast('Budget Updated!')
+
+            }
         }
   return (
     <div>
@@ -60,14 +84,16 @@ function EditBudget({budgetInfo}) {
                   <div className='mt-2'> 
                   <h2 className='text-black font-medium my-1'> Budget Name</h2>
                   <Input placeholder="e.g. Home Decor"
-                  defaultValue={budgetInfo.name}
+               
+                  defaultValue={budgetInfo?.name}
+
                   onChange={(e)=>setName(e.target.value)} /> 
          
                   </div> 
                    <div className='mt-2'> 
                   <h2 className='text-black font-medium my-1'> Budget Amount</h2>
                   <Input type="number"
-                  defaultValue={budgetInfo.amount}
+                  defaultValue={budgetInfo?.amount}
                    placeholder="e.g. 5000" 
                    onChange={(e)=>setAmount(e.target.value)}/> 
                   </div> 

@@ -94,8 +94,8 @@ function ExpensesScreen({params}){
   
  </span>
      <div className='flex gap-2 items-center'></div>
-     <EditBudget budgetInfo={budgetInfo}/>
-               
+     <EditBudget budgetInfo={budgetInfo}
+               refreshData={()=>getBudgetInfo()}/>
            <AlertDialog>
         <AlertDialogTrigger asChild>
          <Button className='flex gap-2 ' variant='destructive'>
