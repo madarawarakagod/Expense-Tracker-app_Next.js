@@ -8,7 +8,7 @@ import BudgetItem from '../../budgets/_components/BudgetItem';
 import AddExpense from '../_components/AddExpense';
 import ExpenseListTable from '../_components/ExpenseListTable';
 import { Button } from "@/components/ui/button";
-import { Trash } from "lucide-react";
+import { ArrowLeft, Trash } from "lucide-react";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -21,7 +21,11 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 import { toast } from 'sonner';
- 
+ import { useRouter } from 'next/navigation';
+import { PenBox } from 'lucide-react';
+import EditBudget from '../_components/EditBudget';
+
+
 
 
 
@@ -85,8 +89,15 @@ function ExpensesScreen({params}){
 
     return(
         <div className='p-10'>
-            <h2 className='text-2xl font-bold flex justify-between items-center'>My Expenses</h2>
 
+        <h2 className='text-2xl font-bold gap-2 flex justify-between'>
+<span className='flex gap-2 items-center'>
+  <ArrowLeft onClick={()=>route.back()} className='cursor-pointer'/>
+  My Epxenses
+  
+ </span>
+     <div className='flex gap-2 items-center'></div>
+     <EditBudget/>
                
            <AlertDialog>
         <AlertDialogTrigger asChild>
@@ -108,9 +119,9 @@ function ExpensesScreen({params}){
   </AlertDialogContent>
 </AlertDialog>
 
-        <Butt
+    
 
-
+</h2>
            <div className='grid grid-cols-1 md:grid-cols-2 mt-6 gap-5'>
             {budgetInfo?<BudgetItem
             budget={budgetInfo}
