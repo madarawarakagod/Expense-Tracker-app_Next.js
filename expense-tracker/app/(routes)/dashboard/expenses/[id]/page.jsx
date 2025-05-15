@@ -27,9 +27,6 @@ import EditBudget from '../_components/EditBudget';
 
 
 
-
-
-
 function ExpensesScreen({params}){
     const {user}=useUser();
     const [budgetInfo,setbudgetInfo]=useState();
@@ -97,7 +94,7 @@ function ExpensesScreen({params}){
   
  </span>
      <div className='flex gap-2 items-center'></div>
-     <EditBudget/>
+     <EditBudget budgetInfo={budgetInfo}/>
                
            <AlertDialog>
         <AlertDialogTrigger asChild>
