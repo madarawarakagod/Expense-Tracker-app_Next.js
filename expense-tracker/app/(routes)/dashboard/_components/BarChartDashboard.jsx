@@ -1,28 +1,27 @@
-import { BarChart } from 'lucide-react'
-import React from 'react'
-import { Bar, Legend, Tooltip, XAxis, YAxis } from 'recharts'
 
-function BarChartDashboard(budgetlist){
+import React from 'react'
+import { Bar, BarChart, Legend, Tooltip, XAxis, YAxis } from 'recharts'
+
+function BarChartDashboard({budgetList}){
     return(
-        <div>
+        <div className='border rounded-lg p-5'>
+            <h2 className='font-b'>Activity</h2>
             <BarChart
             width={500}
             height={300}
-            data={budgetlist}
+            data={budgetList}
             margin={{
-                top:5,
-                right:5,
-                left:5,
-                bottom:5
+                top:7
             }}
+           
             >
                 <XAxis dataKey='name'/>
                 <YAxis/>
                 <Tooltip/>
                 
                 <Legend/>
-                <Bar datKey='totalspend' stackId='a' fill='#4845d2'/>
-                 <Bar datKey='amount' stackId='a' fill='#4845d2'/>
+                <Bar dataKey='totalSpend' stackId='a' fill='#262626'/>
+                 <Bar dataKey='amount' stackId='a' fill=' #a6a6a6'/>
                 </BarChart>
 
         </div>

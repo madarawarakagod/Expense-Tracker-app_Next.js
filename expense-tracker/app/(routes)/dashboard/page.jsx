@@ -6,12 +6,13 @@ import { db } from '@/utils/dbConfig';
 import { desc, eq, getTableColumns, sql } from 'drizzle-orm';
 import { Budgets, Expenses } from '@/utils/schema';
 import BarchartDashboard from './_components/BarChartDashboard';
+import BudgetItem from './budgets/_components/BudgetItem';
 
 function Dashboard() 
 {
  
     const {user}=useUser();
-    const [budgetList,setBudgetList]=useState();
+    const [budgetList,setBudgetList]=useState([]);
     
   
     useEffect(()=>{
@@ -42,16 +43,20 @@ function Dashboard()
      <p className='text-gray-500'>Here's what happening with your money,Let Manage your expenses</p>
 
      <CardInfo budgetList={budgetList}/>
-     <div className='grid grid-cols-1 md:grid-cols-3'>
+     <div className='grid grid-cols-1 md:grid-cols-3 mt-6 gap-5'>
       <div className='md:col-span-2'>
         <BarchartDashboard
         budgetList={budgetList}
         />
-        Chart
+        </div>
+        <div className='grid gap-3'>
+          <h2 className='font-bold text-lg'>Latest Budgets</h2>
+       {budgetList.map((budget,index)=>(
+        <BudgetItem budget={budget} key={index}/>
 
-      </div>
-      <div>
-        Other Content
+       ))}
+
+      
       </div>
     </div>
     </div>
