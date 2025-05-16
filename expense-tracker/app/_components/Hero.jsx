@@ -8,7 +8,7 @@ function Hero() {
     <div className="mx-auto max-w-prose text-center">
       <h1 className="text-4xl font-bold text-gray-900 sm:text-5xl">
        Manage your Expense
-        <strong className="text-green-800 "> Control your Money </strong>
+        <strong className="text-gray-400 "> Control your Money </strong>
 
       </h1>
 
