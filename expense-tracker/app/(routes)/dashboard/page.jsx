@@ -7,6 +7,7 @@ import { desc, eq, getTableColumns, sql } from 'drizzle-orm';
 import { Budgets, Expenses } from '@/utils/schema';
 import BarchartDashboard from './_components/BarChartDashboard';
 import BudgetItem from './budgets/_components/BudgetItem';
+import ExpenseListTable from './expenses/_components/ExpenseListTable';
 
 function Dashboard() 
 {
@@ -72,7 +73,7 @@ function Dashboard()
         <BarchartDashboard
         budgetList={budgetList}
         />
-        <ExpensesListTable
+        <ExpenseListTable
          expensesList={expensesList}
          refreshData={()=>getBudgetList()}
         />
